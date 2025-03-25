@@ -1,0 +1,710 @@
+[Pipeline] Processing file: inputs/docs\dipd_30-06-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-06-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 11 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "16,781,921",
+  "COGS": "(13,441,706)",
+  "GrossProfit": "3,340,215",
+  "OtherOperatingIncome": "1,144,977",
+  "DistributionCosts": "(1,012,659)",
+  "AdministrativeExpenses": "(3,837,952)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "5,833,327",
+  "PeriodStartEnd": "2021-04-01 - 2021-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-06-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-06-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 12 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "55,293,983",
+  "COGS": "(44,561,333)",
+  "GrossProfit": "10,732,650",
+  "OtherOperatingIncome": "833,407",
+  "DistributionCosts": "(1,402,795)",
+  "AdministrativeExpenses": "(4,803,655)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "6,410,800",
+  "PeriodStartEnd": "2022-04-01 - 2022-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-06-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-06-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 11 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "80,099,312",
+  "COGS": "(60,490,240)",
+  "GrossProfit": "19,609,072",
+  "OtherOperatingIncome": "766,748",
+  "DistributionCosts": "(2,660,512)",
+  "AdministrativeExpenses": "(8,087,179)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "8,502,424",
+  "PeriodStartEnd": "2023-04-01 - 2023-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-06-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-06-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 11 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "73,941,960",
+  "COGS": "(56,882,914)",
+  "GrossProfit": "17,059,046",
+  "OtherOperatingIncome": "819,820",
+  "DistributionCosts": "(1,956,362)",
+  "AdministrativeExpenses": "(8,193,104)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "5,779,045",
+  "PeriodStartEnd": "2024-04-01 - 2024-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-09-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-09-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "20,279,212",
+  "COGS": "(15,530,755)",
+  "GrossProfit": "4,748,457",
+  "OtherOperatingIncome": "74,878",
+  "DistributionCosts": "(399,475)",
+  "AdministrativeExpenses": "(1,697,794)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "2,110,337",
+  "PeriodStartEnd": "2021-07-01 - 2021-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-09-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-09-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 14 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "10,732,650",
+  "COGS": "(10,524,082)",
+  "GrossProfit": "208,568",
+  "OtherOperatingIncome": "134,387",
+  "DistributionCosts": "(1,402,795)",
+  "AdministrativeExpenses": "(4,803,655)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "1,827,312",
+  "PeriodStartEnd": "2022-07-01 - 2022-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-09-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-09-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "41,994,058",
+  "COGS": "(31,989,523)",
+  "GrossProfit": "10,004,535",
+  "OtherOperatingIncome": "202,879",
+  "DistributionCosts": "(2,660,512)",
+  "AdministrativeExpenses": "(8,087,179)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "1,863,113",
+  "PeriodStartEnd": "2023-07-01 - 2023-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_30-09-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_30-09-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "40,463,469",
+  "COGS": "(32,303,881)",
+  "GrossProfit": "8,159,588",
+  "OtherOperatingIncome": "284,742",
+  "DistributionCosts": "(1,064,069)",
+  "AdministrativeExpenses": "(4,158,345)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "2,119,244",
+  "PeriodStartEnd": "2024-07-01 - 2024-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-03-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-03-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "13,793,391",
+  "COGS": "(10,109,673)",
+  "GrossProfit": "3,683,718",
+  "OtherOperatingIncome": "163,936",
+  "DistributionCosts": "(348,610)",
+  "AdministrativeExpenses": "(1,257,251)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "1,953,741",
+  "PeriodStartEnd": "2021-01-01 - 2021-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-03-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-03-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "12,550,438",
+  "COGS": "(10,174,187)",
+  "GrossProfit": "2,376,251",
+  "OtherOperatingIncome": "460,652",
+  "DistributionCosts": "(347,955)",
+  "AdministrativeExpenses": "(1,463,385)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "3,011,102",
+  "PeriodStartEnd": "2022-01-01 - 2022-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-03-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-03-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 14 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "19,609,071",
+  "COGS": "(13,171,748)",
+  "GrossProfit": "6,437,323",
+  "OtherOperatingIncome": "235,469",
+  "DistributionCosts": "(113,819)",
+  "AdministrativeExpenses": "(2,928,560)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "1,500,437",
+  "PeriodStartEnd": "2023-01-01 - 2023-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-03-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-03-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "19,076,054",
+  "COGS": "(13,583,528)",
+  "GrossProfit": "5,492,526",
+  "OtherOperatingIncome": "496,056",
+  "DistributionCosts": "(1,956,362)",
+  "AdministrativeExpenses": "(8,193,104)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "5,737,977",
+  "PeriodStartEnd": "2024-01-01 - 2024-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-12-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-12-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "12,730,290",
+  "COGS": "(10,421,358)",
+  "GrossProfit": "2,308,932",
+  "OtherOperatingIncome": "110,949",
+  "DistributionCosts": "(1,012,659)",
+  "AdministrativeExpenses": "(3,837,952)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "5,833,327",
+  "PeriodStartEnd": "2021-10-01 - 2021-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-12-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-12-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 14 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "14,262,521",
+  "COGS": "(10,732,650)",
+  "GrossProfit": "3,529,871",
+  "OtherOperatingIncome": "531,279",
+  "DistributionCosts": "(1,402,795)",
+  "AdministrativeExpenses": "(4,803,655)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "922,039",
+  "PeriodStartEnd": "2022-10-01 - 2022-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-12-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-12-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "80,099,312",
+  "COGS": "(60,490,240)",
+  "GrossProfit": "19,609,072",
+  "OtherOperatingIncome": "766,748",
+  "DistributionCosts": "(2,660,512)",
+  "AdministrativeExpenses": "(8,087,179)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "2,779,338",
+  "PeriodStartEnd": "2023-10-01 - 2023-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\dipd_31-12-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\dipd_31-12-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: DIPPED PRODUCTS PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 2 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "DIPPED PRODUCTS PLC",
+  "Revenue": "19,343,267",
+  "COGS": "(15,514,434)",
+  "GrossProfit": "3,828,833",
+  "OtherOperatingIncome": "555,151",
+  "DistributionCosts": "(1,956,362)",
+  "AdministrativeExpenses": "(8,193,104)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "3,276,732",
+  "PeriodStartEnd": "2024-10-01 - 2024-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-06-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-06-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,400,300",
+  "COGS": "(955,738)",
+  "GrossProfit": "444,562",
+  "OtherOperatingIncome": "5,472",
+  "DistributionCosts": "(180,649)",
+  "AdministrativeExpenses": "(59,170)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "199,429",
+  "PeriodStartEnd": "2021-04-01 - 2021-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-06-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-06-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "2,767,931",
+  "COGS": "(1,735,091)",
+  "GrossProfit": "1,032,840",
+  "OtherOperatingIncome": "6,593",
+  "DistributionCosts": "(473,936)",
+  "AdministrativeExpenses": "(106,886)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "991,673",
+  "PeriodStartEnd": "2022-04-01 - 2022-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-06-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-06-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,474,458",
+  "COGS": "(1,275,967)",
+  "GrossProfit": "198,491",
+  "OtherOperatingIncome": "7,778",
+  "DistributionCosts": "(162,533)",
+  "AdministrativeExpenses": "(88,727)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "(142,907)",
+  "PeriodStartEnd": "2023-04-01 - 2023-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-06-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-06-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,682,540",
+  "COGS": "(1,439,393)",
+  "GrossProfit": "243,147",
+  "OtherOperatingIncome": "5,526",
+  "DistributionCosts": "(193,767)",
+  "AdministrativeExpenses": "(80,255)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "14,640",
+  "PeriodStartEnd": "2024-04-01 - 2024-06-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-09-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-09-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,754,079",
+  "COGS": "(1,155,680)",
+  "GrossProfit": "598,399",
+  "OtherOperatingIncome": "5,717",
+  "DistributionCosts": "(248,786)",
+  "AdministrativeExpenses": "(76,198)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "243,320",
+  "PeriodStartEnd": "2021-07-01 - 2021-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-09-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-09-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "2,661,097",
+  "COGS": "(1,979,877)",
+  "GrossProfit": "681,220",
+  "OtherOperatingIncome": "5,978",
+  "DistributionCosts": "(353,007)",
+  "AdministrativeExpenses": "(116,536)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "250,235",
+  "PeriodStartEnd": "2022-07-01 - 2022-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-09-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-09-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "2,069,984",
+  "COGS": "(1,661,929)",
+  "GrossProfit": "408,055",
+  "OtherOperatingIncome": "10,520",
+  "DistributionCosts": "(202,073)",
+  "AdministrativeExpenses": "(103,343)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "175,867",
+  "PeriodStartEnd": "2023-07-01 - 2023-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_30-09-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_30-09-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "2,139,733",
+  "COGS": "(1,707,131)",
+  "GrossProfit": "432,602",
+  "OtherOperatingIncome": "8,217",
+  "DistributionCosts": "(351,682)",
+  "AdministrativeExpenses": "(88,697)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "(53,830)",
+  "PeriodStartEnd": "2024-07-01 - 2024-09-30"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-03-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-03-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,344,850",
+  "COGS": "(921,087)",
+  "GrossProfit": "423,763",
+  "OtherOperatingIncome": "5,653",
+  "DistributionCosts": "(110,574)",
+  "AdministrativeExpenses": "(54,818)",
+  "OtherOperatingExpense": "3,500",
+  "NetIncome": "294,845",
+  "PeriodStartEnd": "2021-01-01 - 2021-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-03-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-03-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,604,137",
+  "COGS": "(1,037,979)",
+  "GrossProfit": "566,158",
+  "OtherOperatingIncome": "6,251",
+  "DistributionCosts": "(313,782)",
+  "AdministrativeExpenses": "(97,376)",
+  "OtherOperatingExpense": "7,938",
+  "NetIncome": "1,033,224",
+  "PeriodStartEnd": "2022-01-01 - 2022-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-03-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-03-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,702,720",
+  "COGS": "(1,234,766)",
+  "GrossProfit": "467,954",
+  "OtherOperatingIncome": "7,967",
+  "DistributionCosts": "(304,953)",
+  "AdministrativeExpenses": "(122,348)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "(247,409)",
+  "PeriodStartEnd": "2023-01-01 - 2023-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-03-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-03-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,486,128",
+  "COGS": "(1,123,186)",
+  "GrossProfit": "362,942",
+  "OtherOperatingIncome": "10,240",
+  "DistributionCosts": "(154,991)",
+  "AdministrativeExpenses": "(77,853)",
+  "OtherOperatingExpense": "(5,258)",
+  "NetIncome": "(69,608)",
+  "PeriodStartEnd": "2024-01-01 - 2024-03-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-12-2021.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-12-2021.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,778,416",
+  "COGS": "(1,202,429)",
+  "GrossProfit": "575,987",
+  "OtherOperatingIncome": "6,878",
+  "DistributionCosts": "(299,925)",
+  "AdministrativeExpenses": "(76,958)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "181,894",
+  "PeriodStartEnd": "2021-10-01 - 2021-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-12-2022.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-12-2022.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,909,048",
+  "COGS": "(1,487,153)",
+  "GrossProfit": "421,895",
+  "OtherOperatingIncome": "7,125",
+  "DistributionCosts": "(308,958)",
+  "AdministrativeExpenses": "(108,560)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "52,543",
+  "PeriodStartEnd": "2022-10-01 - 2022-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-12-2023.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-12-2023.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "2,089,873",
+  "COGS": "(1,670,217)",
+  "GrossProfit": "419,656",
+  "OtherOperatingIncome": "12,027",
+  "DistributionCosts": "(239,643)",
+  "AdministrativeExpenses": "(104,539)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "70,768",
+  "PeriodStartEnd": "2023-10-01 - 2023-12-31"
+}
+```
+
+[Pipeline] Processing file: inputs/docs\rich_31-12-2024.pdf
+[PDFScraperAgent] Extracting text from inputs/docs\rich_31-12-2024.pdf ...
+[CompanyNameExtractionAgent] Extracted company name: Richard Pieris Exports PLC
+[SectionSelectorAgent] 13 pages identified.
+[SectionSelectorAgent] Selected top 1 candidate sections.
+[DataExtractionAgent] Sending prompt to OpenAI API...
+[DataExtractionAgent] API returned content: ```json
+{
+  "CompanyName": "Richard Pieris Exports PLC",
+  "Revenue": "1,941,892",
+  "COGS": "(1,607,594)",
+  "GrossProfit": "334,298",
+  "OtherOperatingIncome": "6,051",
+  "DistributionCosts": "(286,275)",
+  "AdministrativeExpenses": "(80,581)",
+  "OtherOperatingExpense": "",
+  "NetIncome": "(53,988)",
+  "PeriodStartEnd": "2024-10-01 - 2024-12-31"
+}
+```
+[DataAggregatorAgent] Aggregating results into DataFrame...
+
+[Pipeline] Final aggregated data:
+                   CompanyName     Revenue          COGS GrossProfit  ... OtherOperatingExpense  NetIncome           PeriodStartEnd             FileName
+0          DIPPED PRODUCTS PLC  16,781,921  (13,441,706)   3,340,215  ...                        5,833,327  2021-04-01 - 2021-06-30  dipd_30-06-2021.pdf
+1          DIPPED PRODUCTS PLC  55,293,983  (44,561,333)  10,732,650  ...                        6,410,800  2022-04-01 - 2022-06-30  dipd_30-06-2022.pdf
+2          DIPPED PRODUCTS PLC  80,099,312  (60,490,240)  19,609,072  ...                        8,502,424  2023-04-01 - 2023-06-30  dipd_30-06-2023.pdf
+3          DIPPED PRODUCTS PLC  73,941,960  (56,882,914)  17,059,046  ...                        5,779,045  2024-04-01 - 2024-06-30  dipd_30-06-2024.pdf
+4          DIPPED PRODUCTS PLC  20,279,212  (15,530,755)   4,748,457  ...                        2,110,337  2021-07-01 - 2021-09-30  dipd_30-09-2021.pdf
+5          DIPPED PRODUCTS PLC  10,732,650  (10,524,082)     208,568  ...                        1,827,312  2022-07-01 - 2022-09-30  dipd_30-09-2022.pdf
+6          DIPPED PRODUCTS PLC  41,994,058  (31,989,523)  10,004,535  ...                        1,863,113  2023-07-01 - 2023-09-30  dipd_30-09-2023.pdf
+7          DIPPED PRODUCTS PLC  40,463,469  (32,303,881)   8,159,588  ...                        2,119,244  2024-07-01 - 2024-09-30  dipd_30-09-2024.pdf
+8          DIPPED PRODUCTS PLC  13,793,391  (10,109,673)   3,683,718  ...                        1,953,741  2021-01-01 - 2021-03-31  dipd_31-03-2021.pdf
+9          DIPPED PRODUCTS PLC  12,550,438  (10,174,187)   2,376,251  ...                        3,011,102  2022-01-01 - 2022-03-31  dipd_31-03-2022.pdf
+10         DIPPED PRODUCTS PLC  19,609,071  (13,171,748)   6,437,323  ...                        1,500,437  2023-01-01 - 2023-03-31  dipd_31-03-2023.pdf
+11         DIPPED PRODUCTS PLC  19,076,054  (13,583,528)   5,492,526  ...                        5,737,977  2024-01-01 - 2024-03-31  dipd_31-03-2024.pdf
+12         DIPPED PRODUCTS PLC  12,730,290  (10,421,358)   2,308,932  ...                        5,833,327  2021-10-01 - 2021-12-31  dipd_31-12-2021.pdf
+13         DIPPED PRODUCTS PLC  14,262,521  (10,732,650)   3,529,871  ...                          922,039  2022-10-01 - 2022-12-31  dipd_31-12-2022.pdf
+14         DIPPED PRODUCTS PLC  80,099,312  (60,490,240)  19,609,072  ...                        2,779,338  2023-10-01 - 2023-12-31  dipd_31-12-2023.pdf
+15         DIPPED PRODUCTS PLC  19,343,267  (15,514,434)   3,828,833  ...                        3,276,732  2024-10-01 - 2024-12-31  dipd_31-12-2024.pdf
+16  Richard Pieris Exports PLC   1,400,300     (955,738)     444,562  ...                          199,429  2021-04-01 - 2021-06-30  rich_30-06-2021.pdf
+17  Richard Pieris Exports PLC   2,767,931   (1,735,091)   1,032,840  ...                          991,673  2022-04-01 - 2022-06-30  rich_30-06-2022.pdf
+18  Richard Pieris Exports PLC   1,474,458   (1,275,967)     198,491  ...                        (142,907)  2023-04-01 - 2023-06-30  rich_30-06-2023.pdf
+19  Richard Pieris Exports PLC   1,682,540   (1,439,393)     243,147  ...                           14,640  2024-04-01 - 2024-06-30  rich_30-06-2024.pdf
+20  Richard Pieris Exports PLC   1,754,079   (1,155,680)     598,399  ...                          243,320  2021-07-01 - 2021-09-30  rich_30-09-2021.pdf
+21  Richard Pieris Exports PLC   2,661,097   (1,979,877)     681,220  ...                          250,235  2022-07-01 - 2022-09-30  rich_30-09-2022.pdf
+22  Richard Pieris Exports PLC   2,069,984   (1,661,929)     408,055  ...                          175,867  2023-07-01 - 2023-09-30  rich_30-09-2023.pdf
+23  Richard Pieris Exports PLC   2,139,733   (1,707,131)     432,602  ...                         (53,830)  2024-07-01 - 2024-09-30  rich_30-09-2024.pdf
+24  Richard Pieris Exports PLC   1,344,850     (921,087)     423,763  ...                 3,500    294,845  2021-01-01 - 2021-03-31  rich_31-03-2021.pdf
+25  Richard Pieris Exports PLC   1,604,137   (1,037,979)     566,158  ...                 7,938  1,033,224  2022-01-01 - 2022-03-31  rich_31-03-2022.pdf
+26  Richard Pieris Exports PLC   1,702,720   (1,234,766)     467,954  ...                        (247,409)  2023-01-01 - 2023-03-31  rich_31-03-2023.pdf
+27  Richard Pieris Exports PLC   1,486,128   (1,123,186)     362,942  ...               (5,258)   (69,608)  2024-01-01 - 2024-03-31  rich_31-03-2024.pdf
+28  Richard Pieris Exports PLC   1,778,416   (1,202,429)     575,987  ...                          181,894  2021-10-01 - 2021-12-31  rich_31-12-2021.pdf
+29  Richard Pieris Exports PLC   1,909,048   (1,487,153)     421,895  ...                           52,543  2022-10-01 - 2022-12-31  rich_31-12-2022.pdf
+30  Richard Pieris Exports PLC   2,089,873   (1,670,217)     419,656  ...                           70,768  2023-10-01 - 2023-12-31  rich_31-12-2023.pdf
+31  Richard Pieris Exports PLC   1,941,892   (1,607,594)     334,298  ...                         (53,988)  2024-10-01 - 2024-12-31  rich_31-12-2024.pdf
+
+[32 rows x 11 columns]
+[Pipeline] Aggregated data saved to: outputs/financial_metrics.csv

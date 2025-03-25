@@ -1,0 +1,621 @@
+initial design 
+
+
+import React, { useState, useEffect } from 'react';
+import Plot from 'react-plotly.js';
+
+// ===== Material UI Components =====
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Grid,
+  Paper
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+
+// Drawer width for the sidebar
+const drawerWidth = 240;
+
+function App() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState('All');
+
+  // Automatically fetch data from processed_dataset.json in the public folder
+  useEffect(() => {
+    fetch('/processed_dataset.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((jsonData) => setData(jsonData))
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  // Update company filter
+  const handleCompanyChange = (event) => {
+    setSelectedCompany(event.target.value);
+  };
+
+  // Get list of companies from the data
+  const companies = Array.from(new Set(data.map((d) => d.company_name)));
+
+  // Filter data based on company selection
+  const filteredData =
+    selectedCompany === 'All'
+      ? data
+      : data.filter((d) => d.company_name === selectedCompany);
+
+  // Sort the data based on period_start
+  const sortedData = [...filteredData].sort(
+    (a, b) => new Date(a.period_start) - new Date(b.period_start)
+  );
+
+  // Helper: Compute quarter-over-quarter growth rates for revenue and net income
+  const computeGrowthRates = (companyData) => {
+    const sorted = [...companyData].sort(
+      (a, b) => new Date(a.period_start) - new Date(b.period_start)
+    );
+    const growthData = [];
+    for (let i = 1; i < sorted.length; i++) {
+      const prev = sorted[i - 1];
+      const curr = sorted[i];
+      const revenueGrowth = ((curr.revenue - prev.revenue) / prev.revenue) * 100;
+      const netIncomeGrowth =
+        ((curr.net_income - prev.net_income) / prev.net_income) * 100;
+      growthData.push({
+        quarter: curr.quarter,
+        revenueGrowth,
+        netIncomeGrowth,
+      });
+    }
+    return growthData;
+  };
+
+  // 1. Time Series Trends for Key Financial Metrics
+  const timeSeriesTraces = [];
+  if (selectedCompany === 'All') {
+    companies.forEach((company) => {
+      const companyData = data
+        .filter((d) => d.company_name === company)
+        .sort((a, b) => new Date(a.period_start) - new Date(b.period_start));
+      const quarters = companyData.map((d) => d.quarter);
+
+      timeSeriesTraces.push({
+        x: quarters,
+        y: companyData.map((d) => d.revenue),
+        mode: 'lines+markers',
+        name: `${company} Revenue`,
+      });
+      timeSeriesTraces.push({
+        x: quarters,
+        y: companyData.map((d) => d.gross_profit),
+        mode: 'lines+markers',
+        name: `${company} Gross Profit`,
+      });
+      timeSeriesTraces.push({
+        x: quarters,
+        y: companyData.map((d) => d.operating_income),
+        mode: 'lines+markers',
+        name: `${company} Operating Income`,
+      });
+      timeSeriesTraces.push({
+        x: quarters,
+        y: companyData.map((d) => d.net_income),
+        mode: 'lines+markers',
+        name: `${company} Net Income`,
+      });
+    });
+  } else {
+    const quarters = sortedData.map((d) => d.quarter);
+    timeSeriesTraces.push({
+      x: quarters,
+      y: sortedData.map((d) => d.revenue),
+      mode: 'lines+markers',
+      name: 'Revenue',
+    });
+    timeSeriesTraces.push({
+      x: quarters,
+      y: sortedData.map((d) => d.gross_profit),
+      mode: 'lines+markers',
+      name: 'Gross Profit',
+    });
+    timeSeriesTraces.push({
+      x: quarters,
+      y: sortedData.map((d) => d.operating_income),
+      mode: 'lines+markers',
+      name: 'Operating Income',
+    });
+    timeSeriesTraces.push({
+      x: quarters,
+      y: sortedData.map((d) => d.net_income),
+      mode: 'lines+markers',
+      name: 'Net Income',
+    });
+  }
+
+  // 2. Profit Margin Analysis
+  const marginTraces = [];
+  if (selectedCompany === 'All') {
+    companies.forEach((company) => {
+      const companyData = data
+        .filter((d) => d.company_name === company)
+        .sort((a, b) => new Date(a.period_start) - new Date(b.period_start));
+      const quarters = companyData.map((d) => d.quarter);
+      const grossMargins = companyData.map((d) =>
+        d.revenue ? (d.gross_profit / d.revenue) * 100 : 0
+      );
+      const operatingMargins = companyData.map((d) =>
+        d.revenue ? (d.operating_income / d.revenue) * 100 : 0
+      );
+      const netMargins = companyData.map((d) =>
+        d.revenue ? (d.net_income / d.revenue) * 100 : 0
+      );
+
+      marginTraces.push({
+        x: quarters,
+        y: grossMargins,
+        type: 'bar',
+        name: `${company} Gross Margin (%)`,
+      });
+      marginTraces.push({
+        x: quarters,
+        y: operatingMargins,
+        type: 'bar',
+        name: `${company} Operating Margin (%)`,
+      });
+      marginTraces.push({
+        x: quarters,
+        y: netMargins,
+        type: 'bar',
+        name: `${company} Net Margin (%)`,
+      });
+    });
+  } else {
+    const quarters = sortedData.map((d) => d.quarter);
+    const grossMargins = sortedData.map((d) =>
+      d.revenue ? (d.gross_profit / d.revenue) * 100 : 0
+    );
+    const operatingMargins = sortedData.map((d) =>
+      d.revenue ? (d.operating_income / d.revenue) * 100 : 0
+    );
+    const netMargins = sortedData.map((d) =>
+      d.revenue ? (d.net_income / d.revenue) * 100 : 0
+    );
+
+    marginTraces.push({
+      x: quarters,
+      y: grossMargins,
+      type: 'bar',
+      name: 'Gross Margin (%)',
+    });
+    marginTraces.push({
+      x: quarters,
+      y: operatingMargins,
+      type: 'bar',
+      name: 'Operating Margin (%)',
+    });
+    marginTraces.push({
+      x: quarters,
+      y: netMargins,
+      type: 'bar',
+      name: 'Net Margin (%)',
+    });
+  }
+
+  // 3. Cost Structure Breakdown
+  const breakdownTraces = [];
+  if (selectedCompany === 'All') {
+    companies.forEach((company) => {
+      const companyData = data
+        .filter((d) => d.company_name === company)
+        .sort((a, b) => new Date(a.period_start) - new Date(b.period_start));
+      const quarters = companyData.map((d) => d.quarter);
+      const cogs = companyData.map((d) => d.cogs);
+      const opex = companyData.map((d) => d.opex);
+      const remainder = companyData.map((d) => d.revenue - d.cogs - d.opex);
+
+      breakdownTraces.push({
+        x: quarters,
+        y: cogs,
+        type: 'bar',
+        name: `${company} COGS`,
+      });
+      breakdownTraces.push({
+        x: quarters,
+        y: opex,
+        type: 'bar',
+        name: `${company} Opex`,
+      });
+      breakdownTraces.push({
+        x: quarters,
+        y: remainder,
+        type: 'bar',
+        name: `${company} Remainder`,
+      });
+    });
+  } else {
+    const quarters = sortedData.map((d) => d.quarter);
+    const cogs = sortedData.map((d) => d.cogs);
+    const opex = sortedData.map((d) => d.opex);
+    const remainder = sortedData.map((d) => d.revenue - d.cogs - d.opex);
+
+    breakdownTraces.push({
+      x: quarters,
+      y: cogs,
+      type: 'bar',
+      name: 'COGS',
+    });
+    breakdownTraces.push({
+      x: quarters,
+      y: opex,
+      type: 'bar',
+      name: 'Opex',
+    });
+    breakdownTraces.push({
+      x: quarters,
+      y: remainder,
+      type: 'bar',
+      name: 'Remainder',
+    });
+  }
+
+  // 4. Comparative Performance Dashboard
+  const comparativeTraces = [];
+  if (selectedCompany === 'All') {
+    companies.forEach((company) => {
+      const companyData = data
+        .filter((d) => d.company_name === company)
+        .sort((a, b) => new Date(a.period_start) - new Date(b.period_start));
+      const quarters = companyData.map((d) => d.quarter);
+
+      comparativeTraces.push({
+        x: quarters,
+        y: companyData.map((d) => d.revenue),
+        type: 'bar',
+        name: `${company} Revenue`,
+      });
+      comparativeTraces.push({
+        x: quarters,
+        y: companyData.map((d) => d.net_income),
+        type: 'bar',
+        name: `${company} Net Income`,
+      });
+    });
+  } else {
+    const quarters = sortedData.map((d) => d.quarter);
+    comparativeTraces.push({
+      x: quarters,
+      y: sortedData.map((d) => d.revenue),
+      type: 'bar',
+      name: 'Revenue',
+    });
+    comparativeTraces.push({
+      x: quarters,
+      y: sortedData.map((d) => d.net_income),
+      type: 'bar',
+      name: 'Net Income',
+    });
+  }
+
+  // 5. Growth Rate Analysis
+  const growthTraces = [];
+  if (selectedCompany === 'All') {
+    companies.forEach((company) => {
+      const companyData = data.filter((d) => d.company_name === company);
+      const growthData = computeGrowthRates(companyData);
+      const quarters = growthData.map((d) => d.quarter);
+
+      growthTraces.push({
+        x: quarters,
+        y: growthData.map((d) => d.revenueGrowth),
+        mode: 'lines+markers',
+        name: `${company} Revenue Growth (%)`,
+      });
+      growthTraces.push({
+        x: quarters,
+        y: growthData.map((d) => d.netIncomeGrowth),
+        mode: 'lines+markers',
+        name: `${company} Net Income Growth (%)`,
+      });
+    });
+  } else {
+    const growthData = computeGrowthRates(sortedData);
+    const quarters = growthData.map((d) => d.quarter);
+
+    growthTraces.push({
+      x: quarters,
+      y: growthData.map((d) => d.revenueGrowth),
+      mode: 'lines+markers',
+      name: 'Revenue Growth (%)',
+    });
+    growthTraces.push({
+      x: quarters,
+      y: growthData.map((d) => d.netIncomeGrowth),
+      mode: 'lines+markers',
+      name: 'Net Income Growth (%)',
+    });
+  }
+
+  // === Sidebar / Drawer ===
+  const drawer = (
+    <div>
+      <Toolbar />
+      <List>
+        {/* You can add more sidebar links here */}
+        <ListItem button>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Analytics" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Settings" />
+        </ListItem>
+      </List>
+    </div>
+  );
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      {/* Top Navbar */}
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+          backgroundColor: '#1a2035',
+        }}
+      >
+        <Toolbar>
+          {/* Hamburger Menu Icon for mobile */}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Company Performance Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* Sidebar */}
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="sidebar"
+      >
+        {/* Mobile Drawer */}
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundColor: '#27293d',
+              color: '#fff',
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+
+        {/* Desktop Drawer */}
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundColor: '#27293d',
+              color: '#fff',
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+
+      {/* Main Content Area */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundColor: '#1e1e2f',
+          minHeight: '100vh',
+        }}
+      >
+        <Toolbar />
+        {/* Filter Controls */}
+        <Box
+          sx={{
+            mb: 3,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            color: '#fff',
+          }}
+        >
+          <Typography variant="h5" component="div">
+            Welcome!
+          </Typography>
+          {data.length > 0 && (
+            <FormControl variant="filled" size="small" sx={{ minWidth: 200 }}>
+              <InputLabel sx={{ color: '#fff' }}>Select Company</InputLabel>
+              <Select
+                sx={{ color: '#fff' }}
+                value={selectedCompany}
+                onChange={handleCompanyChange}
+              >
+                <MenuItem value="All">All</MenuItem>
+                {companies.map((company) => (
+                  <MenuItem key={company} value={company}>
+                    {company}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        </Box>
+
+        {/* Charts Grid */}
+        {data.length > 0 ? (
+          <Grid container spacing={3}>
+            {/* 1. Time Series Trends */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper sx={{ p: 2, backgroundColor: '#2a2f4f', color: '#fff' }}>
+                <Typography variant="h6" gutterBottom>
+                  1. Time Series Trends for Key Financial Metrics
+                </Typography>
+                <Plot
+                  data={timeSeriesTraces}
+                  layout={{
+                    paper_bgcolor: '#2a2f4f',
+                    plot_bgcolor: '#2a2f4f',
+                    title: 'Time Series Trends',
+                    font: { color: '#fff' },
+                    xaxis: { title: 'Quarter', tickfont: { color: '#fff' } },
+                    yaxis: { title: 'Amount', tickfont: { color: '#fff' } },
+                  }}
+                  style={{ width: '100%', height: '400px' }}
+                  config={{ displayModeBar: false }}
+                />
+              </Paper>
+            </Grid>
+
+            {/* 2. Profit Margin Analysis */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper sx={{ p: 2, backgroundColor: '#2a2f4f', color: '#fff' }}>
+                <Typography variant="h6" gutterBottom>
+                  2. Profit Margin Analysis
+                </Typography>
+                <Plot
+                  data={marginTraces}
+                  layout={{
+                    paper_bgcolor: '#2a2f4f',
+                    plot_bgcolor: '#2a2f4f',
+                    title: 'Profit Margin Analysis',
+                    font: { color: '#fff' },
+                    barmode: 'group',
+                    xaxis: { title: 'Quarter', tickfont: { color: '#fff' } },
+                    yaxis: { title: 'Margin (%)', tickfont: { color: '#fff' } },
+                  }}
+                  style={{ width: '100%', height: '400px' }}
+                  config={{ displayModeBar: false }}
+                />
+              </Paper>
+            </Grid>
+
+            {/* 3. Cost Structure Breakdown */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper sx={{ p: 2, backgroundColor: '#2a2f4f', color: '#fff' }}>
+                <Typography variant="h6" gutterBottom>
+                  3. Cost Structure Breakdown
+                </Typography>
+                <Plot
+                  data={breakdownTraces}
+                  layout={{
+                    paper_bgcolor: '#2a2f4f',
+                    plot_bgcolor: '#2a2f4f',
+                    title: 'Cost Structure Breakdown',
+                    font: { color: '#fff' },
+                    barmode: 'stack',
+                    xaxis: { title: 'Quarter', tickfont: { color: '#fff' } },
+                    yaxis: { title: 'Amount', tickfont: { color: '#fff' } },
+                  }}
+                  style={{ width: '100%', height: '400px' }}
+                  config={{ displayModeBar: false }}
+                />
+              </Paper>
+            </Grid>
+
+            {/* 4. Comparative Performance Dashboard */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper sx={{ p: 2, backgroundColor: '#2a2f4f', color: '#fff' }}>
+                <Typography variant="h6" gutterBottom>
+                  4. Comparative Performance Dashboard
+                </Typography>
+                <Plot
+                  data={comparativeTraces}
+                  layout={{
+                    paper_bgcolor: '#2a2f4f',
+                    plot_bgcolor: '#2a2f4f',
+                    title: 'Comparative Performance',
+                    font: { color: '#fff' },
+                    barmode: 'group',
+                    xaxis: { title: 'Quarter', tickfont: { color: '#fff' } },
+                    yaxis: { title: 'Amount', tickfont: { color: '#fff' } },
+                  }}
+                  style={{ width: '100%', height: '400px' }}
+                  config={{ displayModeBar: false }}
+                />
+              </Paper>
+            </Grid>
+
+            {/* 5. Growth Rate Analysis */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper sx={{ p: 2, backgroundColor: '#2a2f4f', color: '#fff' }}>
+                <Typography variant="h6" gutterBottom>
+                  5. Growth Rate Analysis
+                </Typography>
+                <Plot
+                  data={growthTraces}
+                  layout={{
+                    paper_bgcolor: '#2a2f4f',
+                    plot_bgcolor: '#2a2f4f',
+                    title: 'Growth Rate Analysis',
+                    font: { color: '#fff' },
+                    xaxis: { title: 'Quarter', tickfont: { color: '#fff' } },
+                    yaxis: { title: 'Growth Rate (%)', tickfont: { color: '#fff' } },
+                  }}
+                  style={{ width: '100%', height: '400px' }}
+                  config={{ displayModeBar: false }}
+                />
+              </Paper>
+            </Grid>
+          </Grid>
+        ) : (
+          <Typography variant="h6" color="white">
+            Loading data...
+          </Typography>
+        )}
+      </Box>
+    </Box>
+  );
+}
+
+export default App;

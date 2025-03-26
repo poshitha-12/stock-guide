@@ -5,51 +5,40 @@ import "./App.css"; // Optional: place additional styles here
 function App() {
   const [rawData, setRawData] = useState([]);
   
-  // First filter: which company to show in the charts
-  const [selectedCompany, setSelectedCompany] = useState("ALL"); 
-  // Second filter: which quarter to show in the KPI cards only
+  // Which company to show in the charts
+  const [selectedCompany, setSelectedCompany] = useState("ALL");
+  // Which quarter to show in the KPI cards only
   const [selectedQuarterForCards, setSelectedQuarterForCards] = useState("");
 
   const [quarters, setQuarters] = useState([]);
 
-  // ------ 1. Fetch the default dataset on mount ------
+  // ------ Fetch the dataset on mount ------
   useEffect(() => {
-    fetch("/processed_dataset.json")
+    fetch("http://127.0.0.1:5000/get-data") // or "http://localhost:5000/get-data"
       .then((res) => res.json())
-      .then((data) => {
-        setRawData(data);
-      })
-      .catch((err) => console.error("Error fetching default dataset:", err));
+      .then((data) => setRawData(data))
+      .catch((err) => console.error("Error fetching dataset:", err));
   }, []);
 
-  // ------ 2. Once rawData is set, extract and sort unique quarters ------
+  // ------ Extract & sort unique quarters ------
   useEffect(() => {
     if (!rawData || rawData.length === 0) return;
-
-    const uniqueQuarters = [...new Set(rawData.map((d) => d.quarter))].sort((a, b) => {
-      // a = "2021-Q1", b = "2022-Q3", etc.
-      const [yearA, qA] = a.split("-Q");
-      const [yearB, qB] = b.split("-Q");
-      return (parseInt(yearA) * 4 + parseInt(qA)) - (parseInt(yearB) * 4 + parseInt(qB));
-    });
+    const uniqueQuarters = [...new Set(rawData.map((d) => d.quarter))]
+      .sort((a, b) => {
+        const [yearA, qA] = a.split("-Q");
+        const [yearB, qB] = b.split("-Q");
+        return (parseInt(yearA) * 4 + parseInt(qA)) - (parseInt(yearB) * 4 + parseInt(qB));
+      });
     setQuarters(uniqueQuarters);
 
-    // Optionally, default the KPI-quarter filter to the latest quarter
+    // Default the KPI-quarter filter to the latest quarter
     if (uniqueQuarters.length > 0) {
       setSelectedQuarterForCards(uniqueQuarters[uniqueQuarters.length - 1]);
     }
   }, [rawData]);
 
-  // ------ 3. Filter data by selected company for charts ------
-  const getFilteredDataForCharts = () => {
-    if (selectedCompany === "ALL") return rawData;
-    return rawData.filter((item) => item.company_name === selectedCompany);
-  };
-
-  // ------ 4. KPI Calculation ------
-  // We'll have a helper to get KPI for a single company & single quarter
+  // ------ Helper: get KPI for (company, quarter) ------
   const getKpiForCompanyAndQuarter = (company, quarter) => {
-    // Filter the raw data for the chosen company & quarter
     const filtered = rawData.filter(
       (d) => d.company_name === company && d.quarter === quarter
     );
@@ -62,8 +51,6 @@ function App() {
         grossMargin: null,
       };
     }
-
-    // We assume only one record per company-quarter
     const dp = filtered[0];
     return {
       revenue: dp.revenue,
@@ -74,52 +61,60 @@ function App() {
     };
   };
 
-  // Decide what to show in the KPI cards based on selectedCompany & selectedQuarterForCards
-  // If "ALL", show 2 sets of KPI cards side by side
-  // If single company, show 1 set of KPI cards
+  // ------ Render KPI Cards ------
   const renderKpiCards = () => {
-    if (!selectedQuarterForCards) return null; // No quarter selected yet
+    if (!selectedQuarterForCards) return null; // no quarter chosen yet
 
     if (selectedCompany === "ALL") {
-      // Show both companies side by side
-      const kpisDipped = getKpiForCompanyAndQuarter("DIPPED PRODUCTS PLC", selectedQuarterForCards);
-      const kpisRich = getKpiForCompanyAndQuarter("Richard Pieris Exports PLC", selectedQuarterForCards);
+      // Two columns, one for each company
+      const kpisDipped = getKpiForCompanyAndQuarter(
+        "DIPPED PRODUCTS PLC",
+        selectedQuarterForCards
+      );
+      const kpisRich = getKpiForCompanyAndQuarter(
+        "Richard Pieris Exports PLC",
+        selectedQuarterForCards
+      );
 
       return (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
           {/* DIPPED PRODUCTS PLC */}
           <div style={{ flex: 1, minWidth: "300px" }}>
-            <h3 style={{ color: "#ccc" }}>DIPPED PRODUCTS PLC</h3>
+            <h3 style={styles.sectionHeader}>DIPPED PRODUCTS PLC</h3>
             <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Revenue</h4>
-                <h3 style={{ color: "#fff" }}>
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Revenue</h4>
+                <h3 style={styles.kpiValue}>
                   {kpisDipped.revenue ? kpisDipped.revenue.toLocaleString() : "-"}
                 </h3>
               </div>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Net Income</h4>
-                <h3 style={{ color: "#fff" }}>
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Net Income</h4>
+                <h3 style={styles.kpiValue}>
                   {kpisDipped.netIncome ? kpisDipped.netIncome.toLocaleString() : "-"}
                 </h3>
               </div>
             </div>
             <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Op. Income</h4>
-                <h3 style={{ color: "#fff" }}>
-                  {kpisDipped.operatingIncome ? kpisDipped.operatingIncome.toLocaleString() : "-"}
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Op. Income</h4>
+                <h3 style={styles.kpiValue}>
+                  {kpisDipped.operatingIncome
+                    ? kpisDipped.operatingIncome.toLocaleString()
+                    : "-"}
                 </h3>
               </div>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Gross Profit</h4>
-                <h3 style={{ color: "#fff" }}>
-                  {kpisDipped.grossProfit ? kpisDipped.grossProfit.toLocaleString() : "-"}
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Gross Profit</h4>
+                <h3 style={styles.kpiValue}>
+                  {kpisDipped.grossProfit
+                    ? kpisDipped.grossProfit.toLocaleString()
+                    : "-"}
                 </h3>
               </div>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Gross Margin</h4>
-                <h3 style={{ color: "#fff" }}>
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Gross Margin</h4>
+                <h3 style={styles.kpiValue}>
                   {kpisDipped.grossMargin
                     ? (kpisDipped.grossMargin * 100).toFixed(2) + "%"
                     : "-"}
@@ -130,37 +125,41 @@ function App() {
 
           {/* RICHARD PIERIS EXPORTS PLC */}
           <div style={{ flex: 1, minWidth: "300px" }}>
-            <h3 style={{ color: "#ccc" }}>Richard Pieris Exports PLC</h3>
+            <h3 style={styles.sectionHeader}>Richard Pieris Exports PLC</h3>
             <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Revenue</h4>
-                <h3 style={{ color: "#fff" }}>
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Revenue</h4>
+                <h3 style={styles.kpiValue}>
                   {kpisRich.revenue ? kpisRich.revenue.toLocaleString() : "-"}
                 </h3>
               </div>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Net Income</h4>
-                <h3 style={{ color: "#fff" }}>
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Net Income</h4>
+                <h3 style={styles.kpiValue}>
                   {kpisRich.netIncome ? kpisRich.netIncome.toLocaleString() : "-"}
                 </h3>
               </div>
             </div>
             <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Op. Income</h4>
-                <h3 style={{ color: "#fff" }}>
-                  {kpisRich.operatingIncome ? kpisRich.operatingIncome.toLocaleString() : "-"}
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Op. Income</h4>
+                <h3 style={styles.kpiValue}>
+                  {kpisRich.operatingIncome
+                    ? kpisRich.operatingIncome.toLocaleString()
+                    : "-"}
                 </h3>
               </div>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Gross Profit</h4>
-                <h3 style={{ color: "#fff" }}>
-                  {kpisRich.grossProfit ? kpisRich.grossProfit.toLocaleString() : "-"}
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Gross Profit</h4>
+                <h3 style={styles.kpiValue}>
+                  {kpisRich.grossProfit
+                    ? kpisRich.grossProfit.toLocaleString()
+                    : "-"}
                 </h3>
               </div>
-              <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#ccc" }}>Gross Margin</h4>
-                <h3 style={{ color: "#fff" }}>
+              <div style={styles.kpiCard}>
+                <h4 style={styles.kpiTitle}>Gross Margin</h4>
+                <h3 style={styles.kpiValue}>
                   {kpisRich.grossMargin
                     ? (kpisRich.grossMargin * 100).toFixed(2) + "%"
                     : "-"}
@@ -171,10 +170,9 @@ function App() {
         </div>
       );
     } else {
-      // Single company: just one set of cards
+      // Single company
       const filtered = rawData.filter((d) => d.company_name === selectedCompany);
       const found = filtered.find((d) => d.quarter === selectedQuarterForCards);
-
       const kpi = found
         ? {
             revenue: found.revenue,
@@ -193,33 +191,33 @@ function App() {
 
       return (
         <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-          <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-            <h4 style={{ color: "#ccc" }}>Revenue</h4>
-            <h3 style={{ color: "#fff" }}>
+          <div style={styles.kpiCard}>
+            <h4 style={styles.kpiTitle}>Revenue</h4>
+            <h3 style={styles.kpiValue}>
               {kpi.revenue ? kpi.revenue.toLocaleString() : "-"}
             </h3>
           </div>
-          <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-            <h4 style={{ color: "#ccc" }}>Net Income</h4>
-            <h3 style={{ color: "#fff" }}>
+          <div style={styles.kpiCard}>
+            <h4 style={styles.kpiTitle}>Net Income</h4>
+            <h3 style={styles.kpiValue}>
               {kpi.netIncome ? kpi.netIncome.toLocaleString() : "-"}
             </h3>
           </div>
-          <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-            <h4 style={{ color: "#ccc" }}>Op. Income</h4>
-            <h3 style={{ color: "#fff" }}>
+          <div style={styles.kpiCard}>
+            <h4 style={styles.kpiTitle}>Op. Income</h4>
+            <h3 style={styles.kpiValue}>
               {kpi.operatingIncome ? kpi.operatingIncome.toLocaleString() : "-"}
             </h3>
           </div>
-          <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-            <h4 style={{ color: "#ccc" }}>Gross Profit</h4>
-            <h3 style={{ color: "#fff" }}>
+          <div style={styles.kpiCard}>
+            <h4 style={styles.kpiTitle}>Gross Profit</h4>
+            <h3 style={styles.kpiValue}>
               {kpi.grossProfit ? kpi.grossProfit.toLocaleString() : "-"}
             </h3>
           </div>
-          <div style={{ backgroundColor: "#2A2A3A", flex: 1, padding: "15px", borderRadius: "8px" }}>
-            <h4 style={{ color: "#ccc" }}>Gross Margin</h4>
-            <h3 style={{ color: "#fff" }}>
+          <div style={styles.kpiCard}>
+            <h4 style={styles.kpiTitle}>Gross Margin</h4>
+            <h3 style={styles.kpiValue}>
               {kpi.grossMargin ? (kpi.grossMargin * 100).toFixed(2) + "%" : "-"}
             </h3>
           </div>
@@ -228,49 +226,269 @@ function App() {
     }
   };
 
-  // ------ CHART DATA PREPARATION (unchanged, still shows all quarters) ------
+  // ------ Chart Data Preparations ------
+
+  // Color palette for creative contrast:
+  // For single-company (default uses DIPPED palette):
+  const SINGLE_BAR_COLOR = "#1E88E5";   // Royal Blue for bars
+  const SINGLE_LINE_COLOR = "#00ACC1";  // Bright Cyan for lines
+
+  // For "ALL" comparison:
+  const DIPPED_BAR_COLOR = "#1E88E5";   
+  const DIPPED_LINE_COLOR = "#00ACC1";  
+  const REXP_BAR_COLOR = "#FB8C00";     
+  const REXP_LINE_COLOR = "#FDD835";    
+
+  // For cost breakdown:
+  const COGS_COLOR = "#E53935";         // Vivid Red
+  const OPEX_COLOR = "#8E24AA";         // Vivid Purple
+
+  // 1) Revenue Trend
   const prepareRevenueData = () => {
     if (!rawData || rawData.length === 0) return [];
-    const companies =
-      selectedCompany === "ALL"
-        ? [...new Set(rawData.map((d) => d.company_name))]
-        : [selectedCompany];
-
-    return companies.map((company) => {
-      const companyData = rawData.filter((d) => d.company_name === company);
-      const yVals = quarters.map((q) => {
-        const found = companyData.find((d) => d.quarter === q);
+    if (selectedCompany === "ALL") {
+      const dippedData = rawData.filter((d) => d.company_name === "DIPPED PRODUCTS PLC");
+      const dippedRev = quarters.map((q) => {
+        const found = dippedData.find((d) => d.quarter === q);
         return found ? found.revenue : null;
       });
-      return {
-        x: quarters,
-        y: yVals,
-        type: "scatter",
-        mode: "lines+markers",
-        name: company,
-      };
-    });
+      const richData = rawData.filter((d) => d.company_name === "Richard Pieris Exports PLC");
+      const richRev = quarters.map((q) => {
+        const found = richData.find((d) => d.quarter === q);
+        return found ? found.revenue : null;
+      });
+
+      return [
+        {
+          x: quarters,
+          y: dippedRev,
+          type: "scatter",
+          mode: "lines+markers",
+          name: "DIPD - Revenue",
+          line: { color: DIPPED_BAR_COLOR },
+          marker: { color: DIPPED_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: richRev,
+          type: "scatter",
+          mode: "lines+markers",
+          name: "REXP - Revenue",
+          line: { color: REXP_BAR_COLOR },
+          marker: { color: REXP_BAR_COLOR },
+        },
+      ];
+    } else {
+      const filtered = rawData.filter((d) => d.company_name === selectedCompany);
+      const revVals = quarters.map((q) => {
+        const found = filtered.find((d) => d.quarter === q);
+        return found ? found.revenue : null;
+      });
+      return [
+        {
+          x: quarters,
+          y: revVals,
+          type: "scatter",
+          mode: "lines+markers",
+          name: "Revenue",
+          line: { color: SINGLE_BAR_COLOR },
+          marker: { color: SINGLE_BAR_COLOR },
+        },
+      ];
+    }
   };
 
+  // 2) Gross Profit & Margin
+  const prepareGrossProfitMarginData = () => {
+    if (!rawData || rawData.length === 0) return [];
+    if (selectedCompany === "ALL") {
+      // DIPPED
+      const dippedData = rawData.filter((d) => d.company_name === "DIPPED PRODUCTS PLC");
+      const dippedGp = quarters.map((q) => {
+        const found = dippedData.find((d) => d.quarter === q);
+        return found ? found.gross_profit : null;
+      });
+      const dippedMargin = quarters.map((q) => {
+        const found = dippedData.find((d) => d.quarter === q);
+        return found && found.revenue > 0
+          ? found.gross_profit / found.revenue
+          : null;
+      });
+      // REXP
+      const richData = rawData.filter((d) => d.company_name === "Richard Pieris Exports PLC");
+      const richGp = quarters.map((q) => {
+        const found = richData.find((d) => d.quarter === q);
+        return found ? found.gross_profit : null;
+      });
+      const richMargin = quarters.map((q) => {
+        const found = richData.find((d) => d.quarter === q);
+        return found && found.revenue > 0
+          ? found.gross_profit / found.revenue
+          : null;
+      });
+
+      return [
+        {
+          x: quarters,
+          y: dippedGp,
+          type: "bar",
+          name: "DIPD - Gross Profit",
+          yaxis: "y1",
+          marker: { color: DIPPED_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: dippedMargin,
+          type: "scatter",
+          mode: "lines+markers",
+          name: "DIPD - Margin",
+          yaxis: "y2",
+          line: { color: DIPPED_LINE_COLOR },
+          marker: { color: DIPPED_LINE_COLOR },
+        },
+        {
+          x: quarters,
+          y: richGp,
+          type: "bar",
+          name: "REXP - Gross Profit",
+          yaxis: "y1",
+          marker: { color: REXP_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: richMargin,
+          type: "scatter",
+          mode: "lines+markers",
+          name: "REXP - Margin",
+          yaxis: "y2",
+          line: { color: REXP_LINE_COLOR },
+          marker: { color: REXP_LINE_COLOR },
+        },
+      ];
+    } else {
+      const filtered = rawData.filter((d) => d.company_name === selectedCompany);
+      const gpVals = quarters.map((q) => {
+        const found = filtered.find((d) => d.quarter === q);
+        return found ? found.gross_profit : null;
+      });
+      const marginVals = quarters.map((q) => {
+        const found = filtered.find((d) => d.quarter === q);
+        return found && found.revenue > 0
+          ? found.gross_profit / found.revenue
+          : null;
+      });
+
+      return [
+        {
+          x: quarters,
+          y: gpVals,
+          type: "bar",
+          name: "Gross Profit",
+          yaxis: "y1",
+          marker: { color: SINGLE_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: marginVals,
+          type: "scatter",
+          mode: "lines+markers",
+          name: "Gross Margin",
+          yaxis: "y2",
+          line: { color: SINGLE_LINE_COLOR },
+          marker: { color: SINGLE_LINE_COLOR },
+        },
+      ];
+    }
+  };
+
+  // 3) Net Income vs Operating Income
   const prepareIncomeData = () => {
-    const filtered = getFilteredDataForCharts();
-    const netIncomeVals = quarters.map((q) => {
-      const found = filtered.find((d) => d.quarter === q);
-      return found ? found.net_income : null;
-    });
-    const opIncomeVals = quarters.map((q) => {
-      const found = filtered.find((d) => d.quarter === q);
-      return found ? found.operating_income : null;
-    });
+    if (!rawData || rawData.length === 0) return [];
+    if (selectedCompany === "ALL") {
+      const dippedData = rawData.filter((d) => d.company_name === "DIPPED PRODUCTS PLC");
+      const dippedNet = quarters.map((q) => {
+        const found = dippedData.find((d) => d.quarter === q);
+        return found ? found.net_income : null;
+      });
+      const dippedOp = quarters.map((q) => {
+        const found = dippedData.find((d) => d.quarter === q);
+        return found ? found.operating_income : null;
+      });
+      const richData = rawData.filter((d) => d.company_name === "Richard Pieris Exports PLC");
+      const richNet = quarters.map((q) => {
+        const found = richData.find((d) => d.quarter === q);
+        return found ? found.net_income : null;
+      });
+      const richOp = quarters.map((q) => {
+        const found = richData.find((d) => d.quarter === q);
+        return found ? found.operating_income : null;
+      });
 
-    return [
-      { x: quarters, y: netIncomeVals, name: "Net Income", type: "bar" },
-      { x: quarters, y: opIncomeVals, name: "Operating Income", type: "bar" },
-    ];
+      return [
+        {
+          x: quarters,
+          y: dippedNet,
+          name: "DIPD - Net Income",
+          type: "bar",
+          marker: { color: DIPPED_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: dippedOp,
+          name: "DIPD - Operating Income",
+          type: "bar",
+          marker: { color: DIPPED_LINE_COLOR },
+        },
+        {
+          x: quarters,
+          y: richNet,
+          name: "REXP - Net Income",
+          type: "bar",
+          marker: { color: REXP_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: richOp,
+          name: "REXP - Operating Income",
+          type: "bar",
+          marker: { color: REXP_LINE_COLOR },
+        },
+      ];
+    } else {
+      const filtered = rawData.filter((d) => d.company_name === selectedCompany);
+      const netIncome = quarters.map((q) => {
+        const found = filtered.find((d) => d.quarter === q);
+        return found ? found.net_income : null;
+      });
+      const opIncome = quarters.map((q) => {
+        const found = filtered.find((d) => d.quarter === q);
+        return found ? found.operating_income : null;
+      });
+
+      return [
+        {
+          x: quarters,
+          y: netIncome,
+          name: "Net Income",
+          type: "bar",
+          marker: { color: SINGLE_BAR_COLOR },
+        },
+        {
+          x: quarters,
+          y: opIncome,
+          name: "Operating Income",
+          type: "bar",
+          marker: { color: SINGLE_LINE_COLOR },
+        },
+      ];
+    }
   };
 
+  // 4) Cost Breakdown (stacked bar) - only if single company
   const prepareCostBreakdownData = () => {
-    const filtered = getFilteredDataForCharts();
+    if (!rawData || rawData.length === 0) return [];
+    if (selectedCompany === "ALL") return []; // Skip if comparing both
+    const filtered = rawData.filter((d) => d.company_name === selectedCompany);
     const cogsVals = quarters.map((q) => {
       const found = filtered.find((d) => d.quarter === q);
       return found ? found.cogs : null;
@@ -279,97 +497,77 @@ function App() {
       const found = filtered.find((d) => d.quarter === q);
       return found ? found.opex : null;
     });
-
     return [
       {
         x: quarters,
         y: cogsVals,
         name: "COGS",
         type: "bar",
-        marker: { color: "#f44336" },
+        marker: { color: COGS_COLOR },
       },
       {
         x: quarters,
         y: opexVals,
         name: "OPEX",
         type: "bar",
-        marker: { color: "#ffa726" },
+        marker: { color: OPEX_COLOR },
       },
     ];
   };
 
-  const prepareGrossProfitMarginData = () => {
-    const filtered = getFilteredDataForCharts();
-    const gpVals = quarters.map((q) => {
-      const found = filtered.find((d) => d.quarter === q);
-      return found ? found.gross_profit : null;
-    });
-    const marginVals = quarters.map((q) => {
-      const found = filtered.find((d) => d.quarter === q);
-      return found && found.revenue > 0
-        ? found.gross_profit / found.revenue
-        : null;
-    });
-
-    return [
-      {
-        x: quarters,
-        y: gpVals,
-        type: "bar",
-        name: "Gross Profit",
-        yaxis: "y1",
-        marker: { color: "#66bb6a" },
-      },
-      {
-        x: quarters,
-        y: marginVals,
-        type: "scatter",
-        mode: "lines+markers",
-        name: "Gross Margin",
-        yaxis: "y2",
-        marker: { color: "#26c6da" },
-      },
-    ];
+  // Layout for Plotly (light background, mostly black text)
+  const chartLayout = {
+    paper_bgcolor: "#ffffff",
+    plot_bgcolor: "#ffffff",
+    font: { color: "#111" },
   };
 
-  // ------ 6. Chart Layout: Dark Theme ------
-  const darkLayout = {
-    paper_bgcolor: "#21202A",
-    plot_bgcolor: "#21202A",
-    font: { color: "#E0E0E0" },
+  // Conditionally render Cost Breakdown chart
+  const renderCostBreakdownChart = () => {
+    if (selectedCompany === "ALL") {
+      return null;
+    }
+    return (
+      <div style={styles.chartContainer}>
+        <h3 style={styles.chartTitle}>Cost Breakdown (COGS vs OPEX)</h3>
+        <Plot
+          data={prepareCostBreakdownData()}
+          layout={{
+            ...chartLayout,
+            barmode: "stack",
+            margin: { t: 40, r: 20, l: 40, b: 40 },
+            xaxis: { title: "Quarter" },
+            yaxis: { title: "Cost" },
+          }}
+          style={{ width: "100%", height: "400px" }}
+          config={{ responsive: true, displayModeBar: false }}
+        />
+      </div>
+    );
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#1E1E2F" }}>
+    <div style={styles.appContainer}>
       {/* SIDEBAR */}
-      <aside
-        style={{
-          width: "250px",
-          backgroundColor: "#29293f",
-          color: "#fff",
-          padding: "20px",
-        }}
-      >
-        <h2 style={{ marginBottom: "30px" }}>Stockviz</h2>
-
+      <aside style={styles.sidebar}>
+        <h2 style={styles.sidebarTitle}>Stockviz</h2>
         {/* COMPANY SELECTOR */}
         <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "8px" }}>
+          <label style={{ display: "block", marginBottom: "8px", color: "#000" }}>
             Select Company:
           </label>
           <select
             value={selectedCompany}
             onChange={(e) => setSelectedCompany(e.target.value)}
-            style={{ width: "100%", padding: "10px", borderRadius: "5px" }}
+            style={styles.selectBox}
           >
             <option value="ALL">Compare Both</option>
             <option value="DIPPED PRODUCTS PLC">DIPPED PRODUCTS PLC</option>
             <option value="Richard Pieris Exports PLC">Richard Pieris Exports PLC</option>
           </select>
         </div>
-
         <nav>
-          <ul style={{ listStyle: "none", padding: 0 }}>
+          <ul style={{ listStyle: "none", padding: 0, color: "#000" }}>
             <li style={{ margin: "15px 0" }}>Dashboard</li>
             <li style={{ margin: "15px 0" }}>Reports</li>
             <li style={{ margin: "15px 0" }}>Settings</li>
@@ -378,21 +576,20 @@ function App() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main style={{ flex: 1, padding: "20px", overflowY: "auto" }}>
+      <main style={styles.mainContent}>
         {/* Page Title */}
-        <h1 style={{ color: "#fff", marginBottom: "10px" }}>Performance</h1>
-
+        <h1 style={styles.pageTitle}>Performance</h1>
         {/* KPI SECTION TITLE + QUARTER FILTER */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-          <h2 style={{ color: "#fff" }}>Quarterly Snapshot</h2>
+        <div style={styles.kpiHeader}>
+          <h2 style={styles.kpiHeaderTitle}>Quarterly Snapshot</h2>
           <div>
-            <label style={{ color: "#ccc", marginRight: "8px" }}>
+            <label style={{ color: "#000", marginRight: "8px" }}>
               Select Quarter:
             </label>
             <select
               value={selectedQuarterForCards}
               onChange={(e) => setSelectedQuarterForCards(e.target.value)}
-              style={{ padding: "8px", borderRadius: "4px" }}
+              style={styles.selectBox}
             >
               {quarters.map((q) => (
                 <option key={q} value={q}>
@@ -402,25 +599,16 @@ function App() {
             </select>
           </div>
         </div>
-
-        {/* KPI CARDS (Controlled by selectedQuarterForCards + selectedCompany) */}
+        {/* KPI CARDS */}
         {renderKpiCards()}
 
         {/* CHART 1: REVENUE TREND */}
-        <div
-          style={{
-            backgroundColor: "#2A2A3A",
-            marginBottom: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <h3 style={{ padding: "10px 15px", color: "#ccc" }}>
-            Quarterly Revenue Trend
-          </h3>
+        <div style={styles.chartContainer}>
+          <h3 style={styles.chartTitle}>Quarterly Revenue Trend</h3>
           <Plot
             data={prepareRevenueData()}
             layout={{
-              ...darkLayout,
+              ...chartLayout,
               margin: { t: 40, r: 20, l: 40, b: 40 },
               xaxis: { title: "Quarter" },
               yaxis: { title: "Revenue" },
@@ -430,71 +618,13 @@ function App() {
           />
         </div>
 
-        {/* CHART 2: NET INCOME vs OPERATING INCOME */}
-        <div
-          style={{
-            backgroundColor: "#2A2A3A",
-            marginBottom: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <h3 style={{ padding: "10px 15px", color: "#ccc" }}>
-            Net vs Operating Income
-          </h3>
-          <Plot
-            data={prepareIncomeData()}
-            layout={{
-              ...darkLayout,
-              barmode: "group",
-              margin: { t: 40, r: 20, l: 40, b: 40 },
-              xaxis: { title: "Quarter" },
-              yaxis: { title: "Amount" },
-            }}
-            style={{ width: "100%", height: "400px" }}
-            config={{ responsive: true, displayModeBar: false }}
-          />
-        </div>
-
-        {/* CHART 3: COST BREAKDOWN (STACKED BAR) */}
-        <div
-          style={{
-            backgroundColor: "#2A2A3A",
-            marginBottom: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <h3 style={{ padding: "10px 15px", color: "#ccc" }}>
-            Cost Breakdown (COGS vs OPEX)
-          </h3>
-          <Plot
-            data={prepareCostBreakdownData()}
-            layout={{
-              ...darkLayout,
-              barmode: "stack",
-              margin: { t: 40, r: 20, l: 40, b: 40 },
-              xaxis: { title: "Quarter" },
-              yaxis: { title: "Cost" },
-            }}
-            style={{ width: "100%", height: "400px" }}
-            config={{ responsive: true, displayModeBar: false }}
-          />
-        </div>
-
-        {/* CHART 4: GROSS PROFIT & MARGIN (COMBO) */}
-        <div
-          style={{
-            backgroundColor: "#2A2A3A",
-            marginBottom: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <h3 style={{ padding: "10px 15px", color: "#ccc" }}>
-            Gross Profit & Margin
-          </h3>
+        {/* CHART 2: GROSS PROFIT & MARGIN */}
+        <div style={styles.chartContainer}>
+          <h3 style={styles.chartTitle}>Gross Profit &amp; Margin</h3>
           <Plot
             data={prepareGrossProfitMarginData()}
             layout={{
-              ...darkLayout,
+              ...chartLayout,
               margin: { t: 40, r: 40, l: 40, b: 40 },
               xaxis: { title: "Quarter" },
               yaxis: { title: "Gross Profit", side: "left" },
@@ -510,10 +640,114 @@ function App() {
           />
         </div>
 
-        {/* (Optionally) Add more charts or analysis sections here */}
+        {/* CHART 3: NET vs OPERATING INCOME */}
+        <div style={styles.chartContainer}>
+          <h3 style={styles.chartTitle}>Net vs Operating Income</h3>
+          <Plot
+            data={prepareIncomeData()}
+            layout={{
+              ...chartLayout,
+              barmode: "group",
+              margin: { t: 40, r: 20, l: 40, b: 40 },
+              xaxis: { title: "Quarter" },
+              yaxis: { title: "Amount" },
+            }}
+            style={{ width: "100%", height: "400px" }}
+            config={{ responsive: true, displayModeBar: false }}
+          />
+        </div>
+
+        {/* CHART 4: COST BREAKDOWN (only if single company) */}
+        {renderCostBreakdownChart()}
       </main>
     </div>
   );
 }
+
+// -- Styles --
+const styles = {
+  appContainer: {
+    display: "flex",
+    minHeight: "100vh",
+    backgroundColor: "#FAFBFF", // Soft white-blue pastel background
+  },
+  sidebar: {
+    width: "250px",
+    backgroundColor: "#E0D7F3", // Gentle pastel lavender
+    color: "#000",
+    padding: "20px",
+    borderRight: "1px solid #ddd",
+  },
+  sidebarTitle: {
+    marginBottom: "30px",
+    color: "#000",
+  },
+  selectBox: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    color: "#000",
+    outline: "none",
+  },
+  mainContent: {
+    flex: 1,
+    padding: "20px",
+    overflowY: "auto",
+    backgroundColor: "#fff",
+  },
+  pageTitle: {
+    color: "#000",
+    marginBottom: "10px",
+  },
+  kpiHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
+  kpiHeaderTitle: {
+    color: "#000",
+    margin: 0,
+  },
+  kpiCard: {
+    backgroundColor: "#fff",
+    flex: 1,
+    padding: "15px",
+    borderRadius: "8px",
+    border: "1px solid #eee",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+  },
+  kpiTitle: {
+    color: "#000",
+    marginBottom: "5px",
+    fontSize: "0.85rem",
+  },
+  kpiValue: {
+    color: "#000",
+    margin: 0,
+    fontSize: "1.1rem",
+    fontWeight: "bold",
+  },
+  sectionHeader: {
+    color: "#000",
+    marginBottom: "10px",
+  },
+  chartContainer: {
+    backgroundColor: "#fff",
+    marginBottom: "20px",
+    borderRadius: "8px",
+    border: "1px solid #eee",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+    paddingBottom: "10px",
+  },
+  chartTitle: {
+    padding: "10px 15px",
+    color: "#000",
+    margin: 0,
+    fontWeight: 500,
+  },
+};
 
 export default App;

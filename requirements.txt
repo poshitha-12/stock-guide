@@ -23,3 +23,7 @@ matplotlib
 seaborn
 statsmodels
 pmdarima
+flask
+flask-cors
+ipykernel
+gunicorn

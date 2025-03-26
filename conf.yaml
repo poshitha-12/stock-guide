@@ -3,5 +3,5 @@ pdf_folder: "data/raw"
 output_csv: "outputs/financial_metrics.csv"
 prompt_template: "extraction_prompt.jinja2"
 openai_params:
-  max_tokens: 500
-  temperature: 0.2
+  max_tokens: 450
+  temperature: 0.02

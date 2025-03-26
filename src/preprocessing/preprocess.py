@@ -159,7 +159,8 @@ def main():
     # 10. Save Processed Data
     # ------------------------------------------------------------------------
     output_path = os.path.join("outputs", "processed_dataset.csv")
-    output_json_path = os.path.join("outputs", "processed_dataset.json")
+    
+    output_json_path = "flask-backend\processed_dataset.json"
     df_final.to_csv(output_path, index=False)
     df_final.to_json(output_json_path, orient="records", indent=4, date_format="iso")
 

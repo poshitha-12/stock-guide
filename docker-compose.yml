@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: flask_backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+
+  frontend:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: react_frontend
+    ports:
+      - "3000:3000"

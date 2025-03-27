@@ -1,0 +1,24 @@
+# Dockerfile.frontend
+FROM node:18-bullseye-slim
+
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
+# Create a working directory
+WORKDIR /app
+
+# Disable engine strict mode
+RUN npm config set engine-strict false
+
+# Copy package files and install dependencies
+COPY react-dashboard/package.json react-dashboard/package-lock.json ./
+RUN npm install
+
+# Copy the rest of the React dashboard code
+COPY react-dashboard/ .
+
+# Expose the port
+EXPOSE 3000
+
+# Start the React server
+CMD ["npm", "start"]

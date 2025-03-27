@@ -1,0 +1,23 @@
+# Dockerfile.backend
+FROM python:3.9-slim
+
+# Create a working directory
+WORKDIR /app
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of your project files
+COPY . .
+
+# (Optional) If you want to run scraping + preprocessing at build time:
+# RUN python -m src.pipeline.pipeline
+# RUN python -m src.preprocessing.preprocess
+
+# Expose the Flask port
+EXPOSE 5000
+
+# Default command to run the Flask backend
+# Adjust path if needed: e.g. "flask-backend/app.py"
+CMD ["python", "flask-backend/app.py"]

@@ -9,14 +9,16 @@ function App() {
   const [selectedCompany, setSelectedCompany] = useState("ALL");
   // Which quarter to show in the KPI cards only
   const [selectedQuarterForCards, setSelectedQuarterForCards] = useState("");
-
   const [quarters, setQuarters] = useState([]);
 
-  // ------ Fetch the dataset on mount ------
+  // ------ Fetch the dataset from Flask endpoint on mount ------
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/get-data") // or "http://localhost:5000/get-data"
+    fetch("http://127.0.0.1:5000/get-data") // Ensure this matches your Flask route
       .then((res) => res.json())
-      .then((data) => setRawData(data))
+      .then((data) => {
+        console.log("Data received from Flask:", data); // Debug log
+        setRawData(data);
+      })
       .catch((err) => console.error("Error fetching dataset:", err));
   }, []);
 
@@ -30,8 +32,6 @@ function App() {
         return (parseInt(yearA) * 4 + parseInt(qA)) - (parseInt(yearB) * 4 + parseInt(qB));
       });
     setQuarters(uniqueQuarters);
-
-    // Default the KPI-quarter filter to the latest quarter
     if (uniqueQuarters.length > 0) {
       setSelectedQuarterForCards(uniqueQuarters[uniqueQuarters.length - 1]);
     }
@@ -63,22 +63,12 @@ function App() {
 
   // ------ Render KPI Cards ------
   const renderKpiCards = () => {
-    if (!selectedQuarterForCards) return null; // no quarter chosen yet
-
+    if (!selectedQuarterForCards) return null;
     if (selectedCompany === "ALL") {
-      // Two columns, one for each company
-      const kpisDipped = getKpiForCompanyAndQuarter(
-        "DIPPED PRODUCTS PLC",
-        selectedQuarterForCards
-      );
-      const kpisRich = getKpiForCompanyAndQuarter(
-        "Richard Pieris Exports PLC",
-        selectedQuarterForCards
-      );
-
+      const kpisDipped = getKpiForCompanyAndQuarter("DIPPED PRODUCTS PLC", selectedQuarterForCards);
+      const kpisRich = getKpiForCompanyAndQuarter("Richard Pieris Exports PLC", selectedQuarterForCards);
       return (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-          {/* DIPPED PRODUCTS PLC */}
           <div style={{ flex: 1, minWidth: "300px" }}>
             <h3 style={styles.sectionHeader}>DIPPED PRODUCTS PLC</h3>
             <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
@@ -99,31 +89,23 @@ function App() {
               <div style={styles.kpiCard}>
                 <h4 style={styles.kpiTitle}>Op. Income</h4>
                 <h3 style={styles.kpiValue}>
-                  {kpisDipped.operatingIncome
-                    ? kpisDipped.operatingIncome.toLocaleString()
-                    : "-"}
+                  {kpisDipped.operatingIncome ? kpisDipped.operatingIncome.toLocaleString() : "-"}
                 </h3>
               </div>
               <div style={styles.kpiCard}>
                 <h4 style={styles.kpiTitle}>Gross Profit</h4>
                 <h3 style={styles.kpiValue}>
-                  {kpisDipped.grossProfit
-                    ? kpisDipped.grossProfit.toLocaleString()
-                    : "-"}
+                  {kpisDipped.grossProfit ? kpisDipped.grossProfit.toLocaleString() : "-"}
                 </h3>
               </div>
               <div style={styles.kpiCard}>
                 <h4 style={styles.kpiTitle}>Gross Margin</h4>
                 <h3 style={styles.kpiValue}>
-                  {kpisDipped.grossMargin
-                    ? (kpisDipped.grossMargin * 100).toFixed(2) + "%"
-                    : "-"}
+                  {kpisDipped.grossMargin ? (kpisDipped.grossMargin * 100).toFixed(2) + "%" : "-"}
                 </h3>
               </div>
             </div>
           </div>
-
-          {/* RICHARD PIERIS EXPORTS PLC */}
           <div style={{ flex: 1, minWidth: "300px" }}>
             <h3 style={styles.sectionHeader}>Richard Pieris Exports PLC</h3>
             <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
@@ -144,25 +126,19 @@ function App() {
               <div style={styles.kpiCard}>
                 <h4 style={styles.kpiTitle}>Op. Income</h4>
                 <h3 style={styles.kpiValue}>
-                  {kpisRich.operatingIncome
-                    ? kpisRich.operatingIncome.toLocaleString()
-                    : "-"}
+                  {kpisRich.operatingIncome ? kpisRich.operatingIncome.toLocaleString() : "-"}
                 </h3>
               </div>
               <div style={styles.kpiCard}>
                 <h4 style={styles.kpiTitle}>Gross Profit</h4>
                 <h3 style={styles.kpiValue}>
-                  {kpisRich.grossProfit
-                    ? kpisRich.grossProfit.toLocaleString()
-                    : "-"}
+                  {kpisRich.grossProfit ? kpisRich.grossProfit.toLocaleString() : "-"}
                 </h3>
               </div>
               <div style={styles.kpiCard}>
                 <h4 style={styles.kpiTitle}>Gross Margin</h4>
                 <h3 style={styles.kpiValue}>
-                  {kpisRich.grossMargin
-                    ? (kpisRich.grossMargin * 100).toFixed(2) + "%"
-                    : "-"}
+                  {kpisRich.grossMargin ? (kpisRich.grossMargin * 100).toFixed(2) + "%" : "-"}
                 </h3>
               </div>
             </div>
@@ -170,7 +146,6 @@ function App() {
         </div>
       );
     } else {
-      // Single company
       const filtered = rawData.filter((d) => d.company_name === selectedCompany);
       const found = filtered.find((d) => d.quarter === selectedQuarterForCards);
       const kpi = found
@@ -229,17 +204,14 @@ function App() {
   // ------ Chart Data Preparations ------
 
   // Color palette for creative contrast:
-  // For single-company (default uses DIPPED palette):
-  const SINGLE_BAR_COLOR = "#1E88E5";   // Royal Blue for bars
-  const SINGLE_LINE_COLOR = "#00ACC1";  // Bright Cyan for lines
+  const SINGLE_BAR_COLOR = "#1E88E5";   // Royal Blue
+  const SINGLE_LINE_COLOR = "#00ACC1";  // Bright Cyan
 
-  // For "ALL" comparison:
   const DIPPED_BAR_COLOR = "#1E88E5";   
   const DIPPED_LINE_COLOR = "#00ACC1";  
   const REXP_BAR_COLOR = "#FB8C00";     
   const REXP_LINE_COLOR = "#FDD835";    
 
-  // For cost breakdown:
   const COGS_COLOR = "#E53935";         // Vivid Red
   const OPEX_COLOR = "#8E24AA";         // Vivid Purple
 
@@ -302,7 +274,6 @@ function App() {
   const prepareGrossProfitMarginData = () => {
     if (!rawData || rawData.length === 0) return [];
     if (selectedCompany === "ALL") {
-      // DIPPED
       const dippedData = rawData.filter((d) => d.company_name === "DIPPED PRODUCTS PLC");
       const dippedGp = quarters.map((q) => {
         const found = dippedData.find((d) => d.quarter === q);
@@ -310,11 +281,9 @@ function App() {
       });
       const dippedMargin = quarters.map((q) => {
         const found = dippedData.find((d) => d.quarter === q);
-        return found && found.revenue > 0
-          ? found.gross_profit / found.revenue
-          : null;
+        return found && found.revenue > 0 ? found.gross_profit / found.revenue : null;
       });
-      // REXP
+
       const richData = rawData.filter((d) => d.company_name === "Richard Pieris Exports PLC");
       const richGp = quarters.map((q) => {
         const found = richData.find((d) => d.quarter === q);
@@ -322,9 +291,7 @@ function App() {
       });
       const richMargin = quarters.map((q) => {
         const found = richData.find((d) => d.quarter === q);
-        return found && found.revenue > 0
-          ? found.gross_profit / found.revenue
-          : null;
+        return found && found.revenue > 0 ? found.gross_profit / found.revenue : null;
       });
 
       return [
@@ -373,9 +340,7 @@ function App() {
       });
       const marginVals = quarters.map((q) => {
         const found = filtered.find((d) => d.quarter === q);
-        return found && found.revenue > 0
-          ? found.gross_profit / found.revenue
-          : null;
+        return found && found.revenue > 0 ? found.gross_profit / found.revenue : null;
       });
 
       return [
@@ -487,7 +452,7 @@ function App() {
   // 4) Cost Breakdown (stacked bar) - only if single company
   const prepareCostBreakdownData = () => {
     if (!rawData || rawData.length === 0) return [];
-    if (selectedCompany === "ALL") return []; // Skip if comparing both
+    if (selectedCompany === "ALL") return [];
     const filtered = rawData.filter((d) => d.company_name === selectedCompany);
     const cogsVals = quarters.map((q) => {
       const found = filtered.find((d) => d.quarter === q);
@@ -524,9 +489,7 @@ function App() {
 
   // Conditionally render Cost Breakdown chart
   const renderCostBreakdownChart = () => {
-    if (selectedCompany === "ALL") {
-      return null;
-    }
+    if (selectedCompany === "ALL") return null;
     return (
       <div style={styles.chartContainer}>
         <h3 style={styles.chartTitle}>Cost Breakdown (COGS vs OPEX)</h3>

@@ -6,9 +6,18 @@ import os
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Define the correct path inside Flask backend
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get Flask backend directory
-JSON_FILE_PATH = os.path.join(BASE_DIR, "processed_data.json")
+# Print to ensure we're running this file
+print("Running app.py from backend folder...")
+
+# Define the correct path (make sure the JSON file is in the same folder as app.py)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+print(BASE_DIR)
+JSON_FILE_PATH = os.path.join(BASE_DIR, "processed_dataset.json")
+print(JSON_FILE_PATH)
+# Test route to verify the Flask server is running
+@app.route("/")
+def home():
+    return "Hello from Flask backend!"
 
 @app.route("/get-data", methods=["GET"])
 def get_data():
@@ -20,4 +29,4 @@ def get_data():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=5000)  # Run on localhost:5000
+    app.run(debug=True, host="127.0.0.1", port=5000)
